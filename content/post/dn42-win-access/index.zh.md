@@ -101,7 +101,7 @@ AllowedIPs = 172.20.0.0/14, 172.31.0.0/16, fd00::/8
 配置好之后，分别在两端启动隧道，Windows 端直接点击连接，VPS 端：
 
 ```bash
-wg-quick up wg-client.conf
+wg-quick up wg-client
 # 或者你喜欢的话
 systemctl enable --now wg-quick@wg-client
 ```
@@ -202,7 +202,7 @@ PS C:\Users\test> curl.exe http://burble.dn42/ -v
 * Connection #0 to host 127.0.0.1:7897 left intact
 ```
 
-由于 Windows 端的 DNS 服务器地址已经指向了对端 VPS 上的 DNS 服务器地址，因此我们需要调整一下代理客户端中系统代理的 `代理绕过`，让系统在访问 .dn42 域名时，不会落到公网，而是走隧道访问对端 VPS 上的 DNS 服务器进行解析。另一方面，还需要注意，希望访问 .dn42 域名时不能开启 TUN 模式，否则无法通过系统代理绕过。这里以 Clash Verge 为例。
+由于 Windows 端的 DNS 服务器地址已经指向了对端 VPS 上的 DNS 服务器地址，因此我们需要调整一下代理客户端中系统代理的 `代理绕过`，让系统在访问 .dn42 域名时，不会落到公网，而是走隧道访问对端 VPS 上的 DNS 服务器进行解析。这里以 Clash Verge 为例。
 
 打开设置，找到 `系统代理`，并点击设置按钮：
 
@@ -211,6 +211,8 @@ PS C:\Users\test> curl.exe http://burble.dn42/ -v
 关闭 `始终使用默认绕过` 以及 `验证代理绕过格式`，并在绕过规则中添加 `*.dn42`、`fd00::*` 和 `fd00::/8`（虽然但是最后一个貌似不会生效，因为 Clash 不支持子网掩码格式的绕过规则）：
 
 ![alt text](img/proxy-bypass.png)
+
+如果希望在开启 TUN 模式时访问 .dn42 域名，需要在配置 Clash 设置中的 `DNS 覆写`，在 `FakeIP 过滤` 中添加 `*.dn42`，否则 FakeIP 会劫持对 .dn42 域名的 DNS 查询。
 
 ## TLS 信任
 
