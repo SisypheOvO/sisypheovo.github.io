@@ -210,7 +210,7 @@ PS C:\Users\test> curl.exe http://burble.dn42/ -v
 
 关闭 `始终使用默认绕过` 以及 `验证代理绕过格式`，并在绕过规则中添加 `*.dn42`、`fd00::*` 和 `fd00::/8`（虽然但是最后一个貌似不会生效，因为 Clash 不支持子网掩码格式的绕过规则）：
 
-![alt text](img/proxy-bypass.png)
+![代理绕过](img/proxy-bypass.png)
 
 如果希望在开启 TUN 模式时访问 .dn42 域名，需要在配置 Clash 设置中的 `DNS 覆写`，在 `FakeIP 过滤` 中添加 `*.dn42`，否则 FakeIP 会劫持对 .dn42 域名的 DNS 查询。
 
